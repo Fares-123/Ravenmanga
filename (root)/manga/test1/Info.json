@@ -1,0 +1,17 @@
+{
+  "title": "Test1",
+  "description": "هذا وصف العمل Test1",
+  "cover": "manga/Test1/cover.jpg",
+  "chapters": [
+    {
+      "title": "الفصل 1",
+      "path": "manga/Test1/Ch1/",
+      "date": "2025-05-20"
+    },
+    {
+      "title": "الفصل 2",
+      "path": "manga/Test1/Ch2/",
+      "date": "2025-05-25"
+    }
+  ]
+}
