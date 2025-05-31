@@ -1,7 +1,7 @@
 {
   "title": "Test1",
   "description": "هذا وصف العمل Test1",
-  "cover": "manga/Test1/cover.jpg",
+  "cover": "manga/Test1/images.png",
   "chapters": [
     {
       "title": "الفصل 1",
