@@ -1,31 +1,85 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<!DOCTYPE html><html lang="ar">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>موقع المانجا</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ravenmanga</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      direction: rtl;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .work {
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 20px;
+      background: #fff;
+    }
+    .cover {
+      max-width: 150px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+    .chapters {
+      margin-top: 10px;
+    }
+    .chapter {
+      margin-bottom: 5px;
+      color: blue;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
+  <h1>Ravenmanga</h1>
+  <div id="works"></div>  <script>
+    async function loadWorks() {
+      const container = document.getElementById("works");
+      const response = await fetch("manga/");
+      const text = await response.text();
+      const parser = new DOMParser();
+      const htmlDoc = parser.parseFromString(text, "text/html");
 
-  <header>
-    <h1>موقع المانجا</h1>
-  </header>
+      const links = Array.from(htmlDoc.querySelectorAll("a"))
+        .map(a => a.getAttribute("href"))
+        .filter(href => href && !href.startsWith("../"));
 
-  <section id="latest-chapters">
-    <h2>آخر الفصول المضافة</h2>
-    <div id="latest-list" class="chapter-list"></div>
-  </section>
+      for (const folder of links) {
+        const workResponse = await fetch(`manga/${folder}`);
+        const workText = await workResponse.text();
+        const workDoc = parser.parseFromString(workText, "text/html");
+        const chLinks = Array.from(workDoc.querySelectorAll("a"))
+          .map(a => a.getAttribute("href"))
+          .filter(h => h && h.startsWith("ch"));
 
-  <section id="works">
-    <h2>الأعمال</h2>
-    <div id="works-list" class="works-grid"></div>
-  </section>
+        chLinks.sort().reverse(); // أحدث الفصول أولاً
 
-  <footer>
-    <p>حقوق النشر © 2025</p>
-  </footer>
+        const cover = `manga/${folder}/cover.jpg`;
+        const workDiv = document.createElement("div");
+        workDiv.className = "work";
 
-  <script src="scripts.js"></script>
-</body>
+        workDiv.innerHTML = `
+          <img src="${cover}" alt="${folder}" class="cover">
+          <h3>${folder}</h3>
+          <div class="chapters">
+            ${chLinks.slice(0, 3).map(ch => `<div class="chapter" onclick="openChapter('${folder}', '${ch}')">${ch}</div>`).join("")}
+          </div>
+        `;
+
+        container.appendChild(workDiv);
+      }
+    }
+
+    function openChapter(work, chapter) {
+      window.location.href = `manga/${work}/${chapter}/`;
+    }
+
+    loadWorks();
+  </script></body>
 </html>
