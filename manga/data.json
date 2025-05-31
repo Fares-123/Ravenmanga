@@ -3,8 +3,7 @@
     {
       "title": "Test1",
       "description": "تجربة مانجا",
-      "cover": "Test/images.png",
-      "path": "Test1"
+      "cover": "images.png"
     }
   ]
 }
