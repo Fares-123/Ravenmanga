@@ -1,0 +1,10 @@
+[
+  {
+    "title": "Test1",
+    "chapters": ["Ch1", "Ch2"]
+  },
+  {
+    "title": "Test2",
+    "chapters": ["Ch1", "Ch2"]
+  }
+]
