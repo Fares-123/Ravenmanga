@@ -5,12 +5,12 @@
   "chapters": [
     {
       "title": "الفصل 1",
-      "path": "manga/Test1/Ch1/",
+      "path": "manga/Test1/الفصل الأول/",
       "date": "2025-05-20"
     },
     {
       "title": "الفصل 2",
-      "path": "manga/Test1/Ch2/",
+      "path": "manga/Test1/الفصل الثاني/",
       "date": "2025-05-25"
     }
   ]
