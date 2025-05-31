@@ -6,13 +6,22 @@ fetch("manga/data.json")
   .then(data => {
     const works = data.works;
 
+    // التحقق من وجود أعمال
+    if (!Array.isArray(works) || works.length === 0) {
+      worksListEl.innerHTML = "<p>لا توجد أعمال لعرضها حالياً.</p>";
+      return;
+    }
+
     // عرض الأعمال
     works.forEach(work => {
       const card = document.createElement("div");
       card.className = "work-card";
 
+      // توليد مسار الغلاف تلقائياً
+      const coverPath = `manga/${work.title}/${work.cover}`;
+
       card.innerHTML = `
-        <img src="${work.cover}" alt="${work.title}" class="work-cover" />
+        <img src="${coverPath}" alt="${work.title}" class="work-cover" />
         <div class="work-title">${work.title}</div>
         <div class="work-desc">${work.description}</div>
       `;
@@ -21,20 +30,20 @@ fetch("manga/data.json")
       worksListEl.appendChild(card);
     });
 
-    // جمع الفصول من كل الأعمال
+    // جمع جميع الفصول
     let allChapters = [];
     works.forEach(work => {
-      work.chapters.forEach(chapter => {
+      (work.chapters || []).forEach(chapter => {
         allChapters.push({
           ...chapter,
           workTitle: work.title,
-          workCover: work.cover,
+          workCover: `manga/${work.title}/${work.cover}`,
           workDescription: work.description
         });
       });
     });
 
-    // ترتيب الفصول حسب التاريخ تنازلي
+    // ترتيب الفصول حسب التاريخ
     allChapters.sort((a, b) => new Date(b.date) - new Date(a.date));
 
     // عرض آخر 5 فصول
@@ -51,7 +60,7 @@ fetch("manga/data.json")
         `عنوان العمل: ${chapter.workTitle}\n` +
         `الوصف: ${chapter.workDescription}\n` +
         `عنوان الفصل: ${chapter.title}\n` +
-        `مسار الفصل: ${chapter.path}`
+        `المجلد: ${chapter.path}`
       );
 
       latestListEl.appendChild(item);
@@ -63,8 +72,8 @@ fetch("manga/data.json")
   });
 
 function showChapters(work) {
-  let chaptersHTML = `<h3>الفصول الخاصة ب${work.title}</h3><ul>`;
-  work.chapters.forEach(chap => {
+  let chaptersHTML = `<h3>الفصول الخاصة بـ ${work.title}</h3><ul>`;
+  (work.chapters || []).forEach(chap => {
     chaptersHTML += `<li>${chap.title} - ${new Date(chap.date).toLocaleDateString("ar-EG")}</li>`;
   });
   chaptersHTML += "</ul>";
