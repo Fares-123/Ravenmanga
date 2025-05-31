@@ -1,0 +1,34 @@
+name: Update Manga Data
+
+on:
+  push:
+    paths:
+      - 'manga/**'      # أي تغيير داخل مجلد manga
+      - '.github/workflows/update-data.yml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+
+    - name: Install dependencies
+      run: pip install --upgrade pip
+
+    - name: Generate data.json
+      run: python generate_data.py
+
+    - name: Commit and push changes
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git add manga/data.json
+        git commit -m "🔄 Update data.json automatically" || echo "No changes to commit"
+        git push
