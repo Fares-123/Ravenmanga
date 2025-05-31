@@ -1,10 +1,10 @@
-[
-  {
-    "title": "Test1",
-    "chapters": ["Ch1", "Ch2"]
-  },
-  {
-    "title": "Test2",
-    "chapters": ["Ch1", "Ch2"]
-  }
-]
+{
+  "works": [
+    {
+      "title": "Test1",
+      "description": "تجربة مانجا",
+      "cover": "Ch1/Img1.jpg",
+      "path": "Test1"
+    }
+  ]
+}
